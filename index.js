@@ -52,18 +52,18 @@ app.get('/get-data-from-excel'  , (req, res)=>{
 		console.log(arr.length)
 	});
 });
-let count = 0;
+let count = 12;
 app.get('/get-student-data', (req, res)=>{
 
 	studentsModel.find()
-	.skip(25 * 15/*count*/)
+	.skip(25 * count)
 	.limit(25)
 	.exec((err, foundStudent)=>{
 		if(err)
 			res.send(err);
 		else
-			count = count + 1;
 			console.log(count)
+			count = count + 1;
 			res.send(foundStudent);
 	});
 });

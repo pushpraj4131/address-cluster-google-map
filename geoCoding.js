@@ -40,6 +40,7 @@ const clusterStudent = (data)=>{
 var areaName = ["","","saurashtrakala","kendra","mahila", "college","morbi","pedak", "gandhigram","kuvadva", "bajarangwadi", "satya",  "sai", "jamnagar", "dudh", "sagar", "yaganik","big","bazar","","neel","club","ayodhya", "university","uni", "feet", "ft" ,"kalawad","nana","mova","mota","mova","mavdi","raiya","kothariya","race","course","amin", "marg","nirmala","mauva","convent","bhaktinagar","hanuman","madhi","nanawati","indira","circle","sadhuvasvani","kevdavadi" , "sadhuvaswani","punit","airport","kankot","nageshwar"," jamnagar","rail","junction","madhapar","ishwariya","ghanteshwar","150","ring","bhavnagar"]
 let cluster = [];
 let notFoundAddress = [];
+let clusterObj = {};
 console.log("=============>", areaName.includes("Raiya"));
 const groupStudentFormat = (data)=>{
   console.log("IN CLUSTERING STUDENT", data);
@@ -61,7 +62,18 @@ const groupStudentFormat = (data)=>{
     console.log("str ====>", str);
     cluster.push(str);
   });
+  cluster.forEach((eachStr)=>{
+    if(clusterObj.eachStr){
+      clusterObj.eachStr.push(eachStr);
+    }
+    else{
+      clusterObj[eachStr] = [];
+      clusterObj.eachStr.push(eachStr);
+    }
+  });
+
   console.log("cluster ==>", cluster , "Not found ============>", notFoundAddress);
+  console.log("cluster Object ==>",clusterObj );
 }
 
 // const verifyAddress = (studentList)=>{

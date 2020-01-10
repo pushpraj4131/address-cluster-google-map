@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+    #map {
+      height: 1000px;
+      width: 100%;
+      background-color: grey;
+    }
+  </style>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHyK08CHb5PEfGHwUc34x-Lnp86YsODGg">
+  // &callback=initMap
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+  <div id="map"></div>
+  <button  >GEt LOcation</button>
+</body>
+<script type="text/javascript" src="./geoCoding.js"></script>
+<script type="text/javascript">
+  var student_array = [];
+  $.ajax({url: "http://192.168.1.89:5000/get-student-data", success: function(result){
+    result.forEach((obj, index)=>{
+      if(obj.name != "Full Name"){
+        student_array.push(obj);
+        obj['splicedAddress'] = obj.address;
+        obj.splicedAddress = obj.splicedAddress.split(",");
+        // obj.splicedAddress.splice(0,1);
+        obj.splicedAddress =  obj.splicedAddress.join(",");
+        obj['newAddress'] =  obj.splicedAddress.replace(/ /gi, "%20");
+        obj.newAddress = obj.newAddress + "%20Rajkot%20Gujarat%20"+obj.postCode+"%20India";
+      }else{
+        console.log("objjj +====>" , obj)
+      }
+    });
+    console.log("obj ===>", student_array);
+    getStudentArray(student_array);
+  }});
+  const getStudentArray = async (data)=>{
+
+    let temp = data.map((key) => tempGetObj(key));
+    const response = await Promise.all(temp);
+    console.log("response ==========>", response);
+    // CallMapInit();
+
+    /*STUDENT CLUSTERS*/
+    const geometry = clusterStudent(response);
+    console.log("response with geomertry ==========>", geometry);
+
+    const groupStudent = groupStudentFormat(geometry);
+    /*VERIFIES STUDENT ADDRESS*/
+    // const geometry = verifyAddress(clusteredStudents.addressFoundStudentList);
+    // initMap(geometry/*.addressFoundStudentList*/);
+    // $.ajax({url: "http://192.168.1.89:5000/insert-left-student",body: geometry.addressFoundStudentList 
+   /* var obj1 = geometry.addressNotFoundStudentList
+    $.ajax({
+                url: "http://192.168.1.89:5000/insert-left-student",
+                type: "POST",
+                dataType: "json",
+                data: {
+                  obj1          
+                },
+                contentType: "application/json",
+                cache: false,
+                success: function(result){
+    
+    console.log("obj ===>", result);
+
+    // getStudentArray(student_array);
+  }});*/
+  }
+
+
+
+</script>
+</html>

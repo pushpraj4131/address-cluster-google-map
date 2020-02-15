@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+    #map {
+      height: 1000px;
+      width: 100%;
+      background-color: grey;
+    }
+  </style>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHyK08CHb5PEfGHwUc34x-Lnp86YsODGg">
+  // &callback=initMap
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/async/3.1.1/async.min.js" async></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+  <div id="map"></div>
+  <button  >GEt LOcation</button>
+</body>
+<!-- <script src=""></script> -->
+<script type="text/javascript" src="./geoCoding.js"></script>
+<script type="text/javascript" >
+  var student_array = [];
+  $.ajax({url: "http://192.168.1.138:5000/get-student-data", success: function(result){
+      result.forEach((obj, index)=>{
+        if(obj.name != "Full Name"){
+          student_array.push(obj);
+          obj['splicedAddress'] = obj.address;
+          obj.splicedAddress = obj.splicedAddress.split(",");
+        // obj.splicedAddress.splice(0,1);
+        obj.splicedAddress =  obj.splicedAddress.join(",");
+        obj['newAddress'] =  obj.splicedAddress.replace(/ /gi, "%20");
+        obj.newAddress = obj.newAddress + "%20Rajkot%20Gujarat%20"+obj.postCode+"%20India";
+      }else{
+        console.log("objjj +====>" , obj)
+      }
+    });
+      console.log("obj ===>", student_array);
+      if(student_array.length > 0){
+        getStudentArray(student_array);
+      }
+    }});
+  
+
+  // var myVar = setInterval(myTimer, 1000);
+
+  // function myTimer() {
+  //   if(student_array.length <= 653){
+  //     callAJAX();
+  //   }
+  //   else{
+  //     myStopFunction();
+  //   }
+  // }
+  // function myStopFunction() {
+  //   clearInterval(myVar);
+  // }
+
+  function callAJAX(){
+    
+  }
+  const getStudentArray = async (data)=>{
+    console.log("async ==>", async);
+    let finalData = []
+
+    async.forEachOfSeries(data ,function(singleData,index, callback){
+      tempGetObj(singleData)
+      .then((temp)=>{
+        console.log(" Hey ", temp)
+        finalData[index] = temp
+        return callback()
+      })
+      .catch((error)=>{
+        console.error("Error in async", error)
+      })
+
+    },(error1)=>{
+      if(error1){
+        console.error(" Error in async out ", error1)
+      }
+      else{
+        console.log(" Success ");
+        const geometry = clusterStudent(finalData);
+    // var obj = geometry.
+    console.log(geometry);
+    console.log("response with geomertry ==========>", geometry);
+    initMap(geometry/*.addressFoundStudentList*/);
+  
+      }
+    })
+     // let temp = data.forEach((key)=> {
+     //    return  tempGetObj(key);
+     // }) 
+    
+  }
+  // var unSorted = {};
+  $("button").click(()=>{
+    $.ajax({url: "http://192.168.1.89:5000/get-found-student-data", success: (result)=>{
+      var unSorted = groupStudentFormat(result);
+      console.log("Final sorting List ================>", unSorted);
+    }});
+      // getStudentArray(student_array);
+
+  });
+
+
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+   /* $.ajax({
+          url: 'http://192.168.1.89:5000/insert-left-student',
+          // dataType: "jsonp",
+          data: geometry,
+          type: 'POST',
+          jsonpCallback: 'callback', // this is not relevant to the POST anymore
+          success: function (data) {
+              // var ret = jQuery.parseJSON(data);
+              // $('#lblResponse').html(ret.msg);
+              console.log('Success: ', data);
+              startFunction(function(){ startFunction() }, 10000);
+              // setTimeout(startFunction(), 10000);
+              
+              
+          },
+          error: function (xhr, status, error) {
+              console.log('Error: ' + error.message);
+              $('#lblResponse').html('Error connecting to the server.');
+          },
+      });*/

@@ -81,14 +81,19 @@
   function tempGetObj(data){
    return new Promise((resolve, reject)=>{
       // var result = $.ajax({url: "https://geocoder.ls.hereapi.com/6.2/geocode.json?apiKey=eCJhkhQSw_8QMWX8-AeSC9Zot2iadnbIoxP_UpRAxjE&searchtext="+data.newAddress});
-      var result = $.ajax({
-         url: "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAHyK08CHb5PEfGHwUc34x-Lnp86YsODGg&address=" + data.newAddress
-      });
-      result.then((found)=>{
-         data['latLong'] = found;
-         console.log('lat lng in tempGetObj', result.responseJSON);
-         return resolve(data)
-      })
+      if(!data.geoCode){
+        var result = $.ajax({
+           url: "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAHyK08CHb5PEfGHwUc34x-Lnp86YsODGg&address=" + data.newAddress
+        });
+        result.then((found)=>{
+           data['latLong'] = found;
+           console.log('lat lng in tempGetObj', result.responseJSON);
+           return resolve(data)
+        })
+      }
+      else{
+        return resolve(data)
+      }  
    });
 }
 
@@ -100,12 +105,16 @@ function clusterStudent(data){
    var AddressFoundStudentList = [];
    data.forEach((obj)=>{
       // console.log("obj =====>" , obj.latLong)
-      if(obj.latLong.status == "OK"){
-         AddressFoundStudentList.push(obj);
-         obj['geoCode'] = obj.latLong.results[0].geometry.location;
-         delete obj.latLong;
-      }else{
-         AddressNotFoundStudentList.push(obj)
+      console.log("obj.geoCode ==========>", obj.geoCode);
+      if(obj.geoCode == undefined){
+        if(obj.latLong.status == "OK" ){
+           AddressFoundStudentList.push(obj);
+           obj['geoCode'] = obj.latLong.results[0].geometry.location;
+           delete obj.latLong;
+        }else{
+           AddressNotFoundStudentList.push(obj)
+        }
+        
       }
    });
  

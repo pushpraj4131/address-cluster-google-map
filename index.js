@@ -59,7 +59,8 @@ let count = 1;
 app.get('/get-student-data', (req, res)=>{
 
 	studentsModel.find()
-	// .limit(300)
+	// .skip(500)
+	
 	.exec((err, foundStudent)=>{
 		if(err)
 			res.send(err);

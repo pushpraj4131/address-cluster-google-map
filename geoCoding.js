@@ -28,15 +28,10 @@ const clusterStudent = (data)=>{
          AddressNotFoundStudentList.push(obj)
       }
    });
-   // console.log();
-   // return {
-   //    addressFoundStudentList: AddressFoundStudentList,
-   //    addressNotFoundStudentList: AddressNotFoundStudentList
-   // }
+ 
     return data;  
 }
 
-// University  || Uni // Kalawad // Nana Mova // Mota Mova // Mavdi Chowk // Raiya // Kothariya // Race Course // Amin Marg // Nirmala Convent // Bhaktinagar // Hanuman Madhi // Nanawati Chowk // Indira Circle // Sadhuvasvani // Punit Nagar // Airport // Kankot // Nageshwar || Jamnagar // Rail nagar // Junction // Madhapar // Ishwariya // Ghanteshwar // 150 ring //bhavnagar
 
 var areaName = ["crystal","mall","sadhuwaswani","sadhuwasvani","vashvani", "40", "80", "sorathiyawadi","gondal","sadhuvashvani", "sadhu","vaswani","vasvani", "mahaddev","wadi","nanmauva", "saurashtrakala","kendra","mahila", "college","morbi","pedak", "gandhigram","kuvadva", "bajarangwadi", "satya",  "sai", "jamnagar", "dudh", "sagar", "yaganik","yagnik","big","bazar","neel","club","ayodhya", "university","uni", "feet", "ft" ,"kalawad","nana","mova","mota","mova","mavdi","raiya","kothariya","race","course","amin", "marg","nirmala","mauva","convent","bhaktinagar","hanuman","madhi","nanawati","indira","sadhuvasvani","kevdavadi" , "sadhuvaswani","punit","airport","kankot","nageshwar","jamnagar","rail","junction","madhapar","ishwariya","ghanteshwar","150","ring","bhavnagar"]
 let cluster = [];
@@ -98,18 +93,7 @@ const groupStudentFormat = (data)=>{
   };
 }
 
-// const verifyAddress = (studentList)=>{
-//    studentList.forEach((list)=>{
-//       if(list.results.length > 1){
-//          list.results.forEach((result)=>{
 
-//          });
-//       }
-//       else{
-
-//       }
-//    });
-// }
 
 
 

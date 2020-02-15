@@ -18,10 +18,10 @@
 </head>
 <body>
   <div id="map"></div>
-  <button  >GEt LOcation</button>
+  
 </body>
 <!-- <script src=""></script> -->
-<script type="text/javascript" src="./geoCoding.js"></script>
+<!-- <script type="text/javascript" src="./geoCoding.js"></script> -->
 <script type="text/javascript" >
   var student_array = [];
   $.ajax({url: "http://192.168.1.138:5000/get-student-data", success: function(result){
@@ -45,23 +45,7 @@
     }});
   
 
-  // var myVar = setInterval(myTimer, 1000);
 
-  // function myTimer() {
-  //   if(student_array.length <= 653){
-  //     callAJAX();
-  //   }
-  //   else{
-  //     myStopFunction();
-  //   }
-  // }
-  // function myStopFunction() {
-  //   clearInterval(myVar);
-  // }
-
-  function callAJAX(){
-    
-  }
   const getStudentArray = async (data)=>{
     console.log("async ==>", async);
     let finalData = []
@@ -91,21 +75,91 @@
   
       }
     })
-     // let temp = data.forEach((key)=> {
-     //    return  tempGetObj(key);
-     // }) 
+   
     
   }
-  // var unSorted = {};
-  $("button").click(()=>{
-    $.ajax({url: "http://192.168.1.89:5000/get-found-student-data", success: (result)=>{
-      var unSorted = groupStudentFormat(result);
-      console.log("Final sorting List ================>", unSorted);
-    }});
-      // getStudentArray(student_array);
+  function tempGetObj(data){
+   return new Promise((resolve, reject)=>{
+      // var result = $.ajax({url: "https://geocoder.ls.hereapi.com/6.2/geocode.json?apiKey=eCJhkhQSw_8QMWX8-AeSC9Zot2iadnbIoxP_UpRAxjE&searchtext="+data.newAddress});
+      var result = $.ajax({
+         url: "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAHyK08CHb5PEfGHwUc34x-Lnp86YsODGg&address=" + data.newAddress
+      });
+      result.then((found)=>{
+         data['latLong'] = found;
+         console.log('lat lng in tempGetObj', result.responseJSON);
+         return resolve(data)
+      })
+   });
+}
 
-  });
 
+function clusterStudent(data){
+   // console.log("Daataa ==========.", data);
+   var AddressNotFoundStudentList = [];
+   var MultipleAddressFoundStudentList = [];
+   var AddressFoundStudentList = [];
+   data.forEach((obj)=>{
+      // console.log("obj =====>" , obj.latLong)
+      if(obj.latLong.status == "OK"){
+         AddressFoundStudentList.push(obj);
+         obj['geoCode'] = obj.latLong.results[0].geometry.location;
+         delete obj.latLong;
+      }else{
+         AddressNotFoundStudentList.push(obj)
+      }
+   });
+ 
+    return data;  
+}
+
+
+function initMap(locat) {
+    //Ravi Residensy, Opp.Gandhi Gram, Dharam Nagar Road
+    console.log("called second @120" , locat);
+    var center = {lat: 22.29063, lng: 70.76917};
+    var locations = [];
+    locat.forEach((obj, index)=>{
+       var arr = [];
+       console.log("erorr in line index ===>", index)
+        if(obj.geoCode){
+          arr.push(obj.name.toString()+ "  "+ obj.address.toString());
+          arr.push(obj.geoCode.lat);
+          arr.push(obj.geoCode.lng);
+          locations.push(arr);
+        }
+    });
+    var map = new google.maps.Map(document.getElementById('map'), {
+       zoom: 10,
+       center: center
+    });
+    // var iconBase = 'https://i.ya-webdesign.com/images/green-crosshair-png-6.png';
+    // var iconBase = 'https://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png';
+    // var iconBase = 'https://maps.google.com/mapfiles/kml/paddle/red-circle.png';
+    var iconBase = 'http://maps.google.com/mapfiles/kml/pal4/icon53.png';
+    var icon = {
+    url: iconBase /*+ 'man.png'*/, // url
+    scaledSize: new google.maps.Size(23, 23), // scaled size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor
+  };
+    var infowindow =  new google.maps.InfoWindow({});
+    var marker, count;
+    for (count = 0; count < locations.length; count++) {
+       marker = new google.maps.Marker({
+          position: new google.maps.LatLng(locations[count][1], locations[count][2]),
+          map: map,
+          title: locations[count][0],
+          icon: icon
+       });
+       google.maps.event.addListener(marker, 'click', (function (marker, count) {
+          return function () {
+             infowindow.setContent(locations[count][0]);
+             infowindow.open(map, marker);
+          }
+       })(marker, count));
+    }
+ }
+  
 
 </script>
 </html>

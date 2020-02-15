@@ -1,0 +1,23 @@
+[
+	{
+		"address": "A-204 , Aakruti Apt . Near Modi school , Ambika township , opp. Mavdi plot headquaters",
+		"modeOfTransport": "Van",
+		"name": "Khanak Mitul  Faldu",
+		"postCode": "360005",
+		"std": "Sr.KgC",
+		"str": " mavdi",
+		"__v": 0,
+		"_id": "5e170c59c27aa15cda0a1e53",
+	},
+	{
+		"address": "7 Labhdeep socitey, 150 Ft Ring Road Mavdi Chowk",
+		"modeOfTransport": "Van",
+		"name": "Shreyaben Rajeshbhai Rank",
+		"postCode": "360004",
+		"std": "Sr.KgD",
+		"str": " 150 ft ring mavdi",
+		"__v": 0,
+		"_id": "5e170c59c27aa15cda0a1e54",
+	}
+
+]

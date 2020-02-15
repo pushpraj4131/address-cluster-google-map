@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<form method="post" action="" class="form" id="form">
+<div class="form-group" id="pre_div" style=" text-align: center">
+<div class="row align-items-center">
+<div class="col-6">
+<p>price</p>
+</div>
+<div class="col-6">
+<p>description</p>
+</div>
+</div>
+<div class="row align-items-center" style="margin-bottom: 20px">
+<div class="col-6">
+<span style="float: right;min-width: 30%; padding-top: 8px;">level 1 :</span>
+<input style="width: 70%" readonly class="form-control" type="text" name="form[1][price]" value="1000">
+</div>
+<div class="col-6">
+<input class="form-control" type="text" name="form[1][description]" value="prepayment">
+</div>
+</div>
+<div class="div_level">
+<div class="row align-items-center">
+<div id="level_price" class="col-6"></div>
+<div id="description" class="col-6"></div>
+</div>
+</div>
+<button type="button" class="btn btn-default mb-5 btn-sm" onclick="level()"><i class="fa fa-plus"></i> add new level </button>
+<div class="row" style="padding-top: 30px">
+<div class="col-3">
+<button type="submit" class="btn btn-success btn-sm" onclick="getValue()">submit</button>
+<!-- <button type="reset" class="btn btn-default btn-sm">reset</button> -->
+</div>
+</div>
+</div>
+</form>
+</body>
+	<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	var i = 2; // Global Variable for Name
+	function level(){
+		var z = document.createElement("SPAN");
+		z.innerText ="level "+[i] +" :";
+		z.setAttribute("style", "float: right;min-width: 30%; padding-top: 8px;");
+		document.getElementById("level_price").append(z);
+		var y = document.createElement("INPUT");
+		y.setAttribute("type", "text");
+		y.setAttribute("class", "form-control");
+		y.setAttribute("style", "width: 70%;margin-bottom:20px");
+		y.setAttribute("placeholder", "---");
+		y.setAttribute("name","[form]"+"["+i+"]"+"[price]");
+		document.getElementById("level_price").append(y);
+		var x = document.createElement("INPUT");
+		x.setAttribute("type", "text");
+		x.setAttribute("class", "form-control");
+		x.setAttribute("style", "margin-bottom:20px");
+		x.setAttribute("placeholder", "---");
+		x.setAttribute("name", "[form]"+"["+i+"]"+"[description]");
+		document.getElementById("description").append(x);
+		i++;
+	}
+	function getValue(){
+		var a = document.getElementById("form");
+		console.log(a);
+	}
+	</script>
+</html>

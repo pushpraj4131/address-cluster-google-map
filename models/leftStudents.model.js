@@ -17,6 +17,9 @@ var leftStudents = new Schema({
 	},
 	modeOfTransport: {
 		type: String
+	},
+	geoCode: {
+		type: Object
 	}
 });
 

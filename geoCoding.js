@@ -145,3 +145,6 @@ function initMap(locat) {
        })(marker, count));
     }
  }
+
+
+ 

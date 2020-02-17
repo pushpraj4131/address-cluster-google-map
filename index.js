@@ -59,8 +59,8 @@ let count = 1;
 app.get('/get-student-data', (req, res)=>{
 
 	studentsModel.find()
-	// .skip(500)
-	
+	// .skip(350)
+	// .limit(50)
 	.exec((err, foundStudent)=>{
 		if(err)
 			res.send(err);
@@ -78,23 +78,41 @@ app.get('/get-student-data', (req, res)=>{
 
 app.post('/insert-left-student', (req, res)=>{
 	// console.log(req.body);
-	var found = req.body.addressFoundStudentList;
-	var lost = req.body.addressNotFoundStudentList;
+	let obj = JSON.stringify(req.body);
+
+	// fs.writeFile('./myjsonfile.json', obj, 'utf8', function(err, result){
+	// 	if(err) console.log("err", err)
+	// 	else console.log("result",result)
+// 	// });
+// 	fs.readFile('./myjsonfile.json', 'utf8', function readFileCallback(err, data){
+// 		if (err){
+// 			console.log(err);
+// 		} else {
+//     obj = JSON.parse(data); //now it an object
+//     obj.key.push(req.body); //add some data
+//     json = JSON.stringify(obj); //convert it back to json
+//     fs.writeFile('myjsonfile.json', json, 'utf8', function(err, result){
+//     	if(err) console.log("err", err)
+//     		else console.log("result",result)
+//     	});; 
+// }});
+	// var found = req.body.addressFoundStudentList;
+	// var lost = req.body.addressNotFoundStudentList;
 	
-	var insert = foundStudetnsModel.insertMany(found)
-	insert.then((data)=>{
+	// var insert = foundStudetnsModel.insertMany(found)
+	// insert.then((data)=>{
 	
-		if(lost){
-			var lose = leftStudentsModel.insertMany(lost);
-			lose.then((lost)=>{
-				res.send("Next cycle");
-			});
-		}
-		else{
-				// console.log("error");
-				res.send("Next cycle");
-		}
-	});
+	// 	if(lost){
+	// 		var lose = leftStudentsModel.insertMany(lost);
+	// 		lose.then((lost)=>{
+	// 			res.send("Next cycle");
+	// 		});
+	// 	}
+	// 	else{
+	// 			// console.log("error");
+	// 			res.send("Next cycle");
+	// 	}
+	// });
 });
 
 var nextCounter = 0

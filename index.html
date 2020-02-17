@@ -9,6 +9,9 @@
       background-color: grey;
     }
   </style>
+  <script type="text/javascript">
+    
+  </script>
   <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHyK08CHb5PEfGHwUc34x-Lnp86YsODGg">
   // &callback=initMap
@@ -25,126 +28,34 @@
 <script type="text/javascript" >
   var student_array = [];
   let  geometry = getData();
-  initMap(geometry);
-  // $.ajax({url: "http://192.168.1.138:5000/get-student-data", success: function(result){
-  //     result.forEach((obj, index)=>{
-  //       if(obj.name != "Full Name"){
-  //         student_array.push(obj);
-  //         obj['splicedAddress'] = obj.address;
-  //         obj.splicedAddress = obj.splicedAddress.split(",");
-  //       // obj.splicedAddress.splice(0,1);
-  //       obj.splicedAddress =  obj.splicedAddress.join(",");
-  //       obj['newAddress'] =  obj.splicedAddress.replace(/ /gi, "%20");
-  //       obj.newAddress = obj.newAddress + "%20Rajkot%20Gujarat%20"+obj.postCode+"%20India";
-  //     }else{
-  //       console.log("objjj +====>" , obj)
-  //     }
-  //   });
-  //     console.log("obj ===>", student_array);
-  //     if(student_array.length > 0){
-  //       getStudentArray(student_array);
-  //     }
-  //   }});
-  
-
-
-  const getStudentArray = async (data)=>{
-    console.log("async ==>", async);
-    let finalData = []
-
-    // async.forEachOfSeries(data ,function(singleData,index, callback){
-    //   tempGetObj(singleData)
-    //   .then((temp)=>{
-    //     console.log(" Hey ", temp)
-    //     finalData[index] = temp
-    //     return callback()
-    //   })
-    //   .catch((error)=>{
-    //     console.error("Error in async", error)
-    //   })
-
-    // },(error1)=>{
-    //   if(error1){
-    //     console.error(" Error in async out ", error1)
-    //   }
-    //   else{
-    //     console.log(" Success ");
-    //     const geometry = clusterStudent(finalData);
-    
-    
-    // console.log("response with geomertry ==========>", JSON.stringify(geometry, null, 2) );
-    // initMap(geometry/*.addressFoundStudentList*/);
-  
-    //   }
-    // })
-   
-    
+  if(geometry){
+    initMap(geometry);
   }
-  function tempGetObj(data){
-   return new Promise((resolve, reject)=>{
-      // var result = $.ajax({url: "https://geocoder.ls.hereapi.com/6.2/geocode.json?apiKey=eCJhkhQSw_8QMWX8-AeSC9Zot2iadnbIoxP_UpRAxjE&searchtext="+data.newAddress});
-      if(!data.geoCode){
-        var result = $.ajax({
-           url: "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAHyK08CHb5PEfGHwUc34x-Lnp86YsODGg&address=" + data.newAddress
-        });
-        result.then((found)=>{
-           data['latLong'] = found;
-           console.log('lat lng in tempGetObj', result.responseJSON);
-           return resolve(data)
-        })
-      }
-      else{
-        return resolve(data)
-      }  
-   });
-}
-
-
-function clusterStudent(data){
-   // console.log("Daataa ==========.", data);
-   var AddressNotFoundStudentList = [];
-   var MultipleAddressFoundStudentList = [];
-   var AddressFoundStudentList = [];
-   data.forEach((obj)=>{
-      // console.log("obj =====>" , obj.latLong)
-      console.log("obj.geoCode ==========>", obj.geoCode);
-      if(obj.geoCode == undefined){
-        if(obj.latLong.status == "OK" ){
-           AddressFoundStudentList.push(obj);
-           obj['geoCode'] = obj.latLong.results[0].geometry.location;
-           delete obj.latLong;
-        }else{
-           AddressNotFoundStudentList.push(obj)
-        }
-        
-      }
-   });
- 
-    return data;  
-}
-
-
-function initMap(locat) {
+  function initMap(locat) {
     //Ravi Residensy, Opp.Gandhi Gram, Dharam Nagar Road
     console.log("called second @120" , locat);
-    var center = {lat: 22.29063, lng: 70.76917};
+    var center = {lat: 22.2939113, lng: 70.7457402};
     var locations = [];
+    let ar = [];
+    ar = ["TN Rao School for Girls", 22.293832,70.745582];
+
+    locations.push(ar);
     locat.forEach((obj, index)=>{
-       var arr = [];
-       console.log("erorr in line index ===>", index)
-        if(obj.geoCode){
-          arr.push(obj.name.toString()+ "  "+ obj.address.toString());
-          arr.push(obj.geoCode.lat);
-          arr.push(obj.geoCode.lng);
-          locations.push(arr);
-        }
-    });
+     var arr = [];
+     console.log("erorr in line index ===>", index)
+     if(obj.geoCode){
+      arr.push(obj.name.toString()+ "  "+ obj.address.toString());
+      arr.push(obj.geoCode.lat);
+      arr.push(obj.geoCode.lng);
+      locations.push(arr);
+    }
+  });
     console.log("location ====++++>", locations)
     
     var map = new google.maps.Map(document.getElementById('map'), {
-       zoom: 10,
-       center: center
-    });
+     zoom: 10,
+     center: center
+   });
     // var iconBase = 'https://i.ya-webdesign.com/images/green-crosshair-png-6.png';
     // var iconBase = 'https://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png';
     // var iconBase = 'https://maps.google.com/mapfiles/kml/paddle/red-circle.png';
@@ -155,15 +66,42 @@ function initMap(locat) {
     origin: new google.maps.Point(0,0), // origin
     anchor: new google.maps.Point(0, 0) // anchor
   };
+  
+  
+
+
+
+
+
+
+
+
+  var icon1 = {
+    url: iconBase /*+ 'man.png'*/, // url
+    scaledSize: new google.maps.Size(23, 23), // scaled size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor
+  };
     var infowindow =  new google.maps.InfoWindow({});
     var marker, count;
     for (count = 0; count < locations.length; count++) {
-       marker = new google.maps.Marker({
+      if(count == 0){
+        marker = new google.maps.Marker({
           position: new google.maps.LatLng(locations[count][1], locations[count][2]),
           map: map,
           title: locations[count][0],
-          icon: icon
-       });
+          
+        });
+      }
+      else{
+       marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[count][1], locations[count][2]),
+        map: map,
+        title: locations[count][0],
+        icon: icon
+      });
+
+     }
        google.maps.event.addListener(marker, 'click', (function (marker, count) {
           return function () {
              infowindow.setContent(locations[count][0]);
